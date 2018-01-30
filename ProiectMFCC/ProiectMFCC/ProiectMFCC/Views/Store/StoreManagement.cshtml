@@ -1,0 +1,99 @@
+﻿@model ProiectMFCC.Controllers.ViewModel
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <hr />
+
+    @using (Html.BeginForm("GetCart", "Store"))
+    {
+
+        @Html.LabelFor(model => model.ClientName)
+        @Html.EditorFor(model => model.ClientName)
+        <input type="submit" value="Get cart" />
+
+    }
+
+    @using (Html.BeginForm("AddInstrumentToCart", "Store"))
+    {
+        @Html.HiddenFor(model => model.ClientName)
+        @Html.LabelFor(model => model.InstrumentName)
+        @Html.EditorFor(model => model.InstrumentName)
+        <input type="submit" value="Add instrument" />
+    }
+
+
+    @using (Html.BeginForm("AddAccessoryToCart", "Store"))
+    {
+        @Html.HiddenFor(model => model.ClientName)
+        @Html.HiddenFor(model => model.InstrumentName)
+        @Html.LabelFor(model => model.AccessoryName)
+        @Html.EditorFor(model => model.AccessoryName)
+        <input type="submit" value="Add accessory" />
+    }
+
+    @using (Html.BeginForm("DeleteItem", "Store"))
+    {
+        @Html.HiddenFor(model => model.ClientName)
+        @Html.HiddenFor(model => model.InstrumentName)
+        @Html.HiddenFor(model => model.AccessoryName)
+        @Html.LabelFor(model => model.DeletedItemName)
+        @Html.EditorFor(model => model.DeletedItemName)
+            <input type="submit" value="Remove item" />
+    }
+
+    @using (Html.BeginForm("ChangeEmail", "Store"))
+    {
+        @Html.HiddenFor(model => model.ClientName)
+        @Html.HiddenFor(model => model.InstrumentName)
+        @Html.HiddenFor(model => model.AccessoryName)
+        @Html.HiddenFor(model => model.DeletedItemName)
+        @Html.LabelFor(model => model.EmailValue)
+        @Html.EditorFor(model => model.EmailValue)
+            <input type="submit" value="Change email" />
+    }
+
+    @using (Html.BeginForm("Deadlock", "Store"))
+    {
+        @Html.HiddenFor(model => model.ClientName)
+        @Html.HiddenFor(model => model.InstrumentName)
+        @Html.HiddenFor(model => model.AccessoryName)
+        @Html.HiddenFor(model => model.DeletedItemName)
+        @Html.HiddenFor(model => model.Cart.Id)
+        @Html.HiddenFor(model => model.EmailValue)    
+        <input type="submit" value="Simulate deadlock" />
+    }
+
+    <h3>Current email: @ViewBag.Email</h3>
+    <h3  style="color: red"> @ViewBag.ErrorMessage</h3>
+    <h2>Cart</h2>
+    <table class="table">
+        @foreach (var item in Model.Cart.Items)
+        {
+            <tr>
+                <td>
+                    @if (@item.GetType() == typeof(ProiectMFCC.Models.Main.Instrument))
+                    {
+                        @Html.DisplayFor(modelItem => ((ProiectMFCC.Models.Main.Instrument)item).Name)
+                    }
+                    else 
+                    {
+                        @Html.DisplayFor(modelItem => ((ProiectMFCC.Models.Main.Accessory)item).Name)
+                    }
+                </td>
+                <td>
+                    @if (@item.GetType() == typeof(ProiectMFCC.Models.Main.Instrument))
+                    {
+                        @Html.DisplayFor(modelItem => ((ProiectMFCC.Models.Main.Instrument)item).Price)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => ((ProiectMFCC.Models.Main.Accessory)item).Price)
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+    <h2>Total price: @Html.DisplayFor(model => model.Cart.TotalPrice)</h2>
+</div>

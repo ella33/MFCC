@@ -1,0 +1,18 @@
+﻿@model ProiectMFCC.Controllers.DonationsViewModel
+
+@{
+    ViewBag.Title = "Donations Portal";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <hr />
+
+    @using (Html.BeginForm("GetDonations", "Donations"))
+    {
+        @Html.TextBoxFor(m => m.DonorName, new { placeholder = Html.DisplayNameFor(n => n.DonorName) })
+        <input type="submit" value="List donations" />
+    }
+</div>
+
