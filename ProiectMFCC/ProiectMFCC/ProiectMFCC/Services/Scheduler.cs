@@ -12,7 +12,7 @@ namespace ProiectMFCC.Services
         public static string WRITE = "write";
         public static string READ = "read";
         private Dictionary<object, Lock> locks;
-        private List<WaitFor> waitFor;
+        private  List<WaitFor> waitFor;
 
         public List<Transaction> Transactions { get; set; }
 
@@ -21,8 +21,8 @@ namespace ProiectMFCC.Services
         public Scheduler(Dictionary<object, Lock> locks, List<Transaction> transactions, List<WaitFor> waitFor)
         {
             this.locks = locks;
-            this.Transactions = transactions;
             this.waitFor = waitFor;
+            Transactions = transactions;
         }
 
         //read lock
@@ -40,13 +40,15 @@ namespace ProiectMFCC.Services
                     }
                     int transactionID = transaction.Id;
                     if (myLock == null)
-                    {                         //create a read lock on resource
+                    {                         
+                        //create a read lock on resource
                         myLock = new Lock(READ, resource, transactionID, table);
                         locks.Add(resource, myLock);
                         wait = false;
                     }
                     else if (myLock.Type == WRITE)
-                    {  //already lock==> must wait
+                    {   
+                        //already lock==> must wait
                         if (isDeadlock(transactionID, myLock.TransactionId))
                         {
                             //releaseLocks(transaction);

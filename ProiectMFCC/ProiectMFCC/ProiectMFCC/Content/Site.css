@@ -47,3 +47,11 @@ input[type="submit"] {
     padding: 7px;
     font-weight: bold;
 }
+
+.flex-container {
+    display: flex;
+}
+
+.flex-column {
+    flex: 1;
+}

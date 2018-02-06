@@ -254,7 +254,9 @@
     <Compile Include="Models\Transactions\WaitFor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ConnectionStrings.cs" />
+    <Compile Include="Repositories\CountriesRepo.cs" />
     <Compile Include="Repositories\DonationsRepo.cs" />
+    <Compile Include="Repositories\ProjectsRepo.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Services\Scheduler.cs" />
     <Compile Include="Startup.cs" />

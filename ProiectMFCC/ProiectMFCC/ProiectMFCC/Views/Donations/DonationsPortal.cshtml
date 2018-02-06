@@ -6,13 +6,119 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div>
-    <hr />
+<div class="flex-container">
 
-    @using (Html.BeginForm("GetDonations", "Donations"))
+    <div class="flex-column">
+
+        @using (Html.BeginForm("GetDonations", "Donations"))
+        {
+            @Html.TextBoxFor(m => m.DonorName, new { placeholder = Html.DisplayNameFor(n => n.DonorName) })
+            <input type="submit" value="List donations" />
+        }
+        @if (Model.Donations.Count > 0)
+        {
+            <b>Total donations: $</b> 
+            <span>@Model.TotalDonations</span>
+        }
+    </div>
+
+    <div class="flex-column">
+        @if (Model.Donations.Count > 0)
+        {
+            <table class="table-bordered">
+                <thead>
+                    <tr>
+                        <th>Donor Id</th>
+                        <th>Submmission Date</th>
+                        <th>Amount $</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var donation in Model.Donations)
+                {
+
+                        <tr>
+                            <td>@donation.DonorId</td>
+                            <td>@donation.SubmissionDate</td>
+                            <td>@donation.Amount</td>
+                            <td>
+                                @using (Html.BeginForm("DeleteDonation", "Donations"))
+                                {
+                                    @Html.Hidden("donationId", donation.Id);
+                                    <input type="submit" value="Delete" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <em> You have made no donations. See the projects list and consider making one. </em>
+        }
+    </div>
+</div>
+<div>
+    <h3> Add Donation </h3>
+    @using (Html.BeginForm("AddDonation", "Donations"))
     {
-        @Html.TextBoxFor(m => m.DonorName, new { placeholder = Html.DisplayNameFor(n => n.DonorName) })
-        <input type="submit" value="List donations" />
+        <div>
+            @Html.TextBoxFor(m => m.ProjectName, new { placeholder = Html.DisplayNameFor(n => n.ProjectName) })
+        </div>
+        <div>
+            @Html.TextBoxFor(m => m.Amount, new { placeholder = Html.DisplayNameFor(n => n.Amount) })
+        </div>
+        <input type="submit" value="Add donation" />
     }
 </div>
 
+<hr />
+<div>
+    <h3> Projects List </h3>
+    @if (Model.Projects.Count > 0)
+    {
+        <table class="table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Funds</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var project in Model.Projects)
+                {
+
+                    <tr>
+                        <td>@project.Id</td>
+                        <td>@project.Name</td>
+                        <td>@project.Description</td>
+                        <td>@project.Funds</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<hr />
+<div>
+    <h3> Add New Donor </h3>
+    @using (Html.BeginForm("AddDonor", "Donations"))
+    {
+        <div>
+            @Html.TextBoxFor(m => m.NewDonorName, new { placeholder = Html.DisplayNameFor(n => n.NewDonorName) })
+        </div>
+        <div>
+            @Html.DropDownListFor(m => m.CountryId, Model.Countries, "- Please select a country -")
+            <b> OR </b>
+            @Html.TextBoxFor(m => m.NewCountryName, new { placeholder = Html.DisplayNameFor(n => n.NewCountryName) })
+        </div>
+        <input type="submit" value="Add donor" />
+    }
+</div>
